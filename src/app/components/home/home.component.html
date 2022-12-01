@@ -1,0 +1,33 @@
+<p>home works!</p>
+<p-tabView styleClass="tabview-custom">
+    <p-tabPanel [cache]="false">
+        <ng-template pTemplate="header">
+            <i class="pi pi-user"></i>
+            <span>Cantantes</span>
+        </ng-template>
+        <ng-template pTemplate="content">
+        <app-student></app-student>
+    </ng-template>
+    </p-tabPanel>
+    <p-tabPanel header="Header II" [cache]="false">
+        <ng-template pTemplate="header">
+            <i class="pi pi-calendar-plus"></i>
+            <span>Campañas de votación</span>
+        </ng-template>
+
+        <ng-template pTemplate="content">
+        <app-student></app-student>
+    </ng-template>
+    </p-tabPanel>
+      <p-tabPanel header="Header III" [cache]="false">
+        <ng-template pTemplate = "header">
+            <i class="pi pi-images"></i>
+       <span> Banners</span>
+
+        </ng-template>
+
+        <ng-template pTemplate="content">
+            <app-score></app-score>
+        </ng-template>
+    </p-tabPanel>
+</p-tabView>
