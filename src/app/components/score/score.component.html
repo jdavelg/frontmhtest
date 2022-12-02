@@ -34,35 +34,33 @@
                 <th style="width: 3rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon>
+                <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon>
                 </th>
-                <!--  <th pSortableColumn="startDate">Fecha Inicio <p-sortIcon field="startDate"></p-sortIcon></th> -->
-                <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon>
+
+                <th pSortableColumn="value">Nota <p-sortIcon field="value"></p-sortIcon>
                 </th>
-                <th pSortableColumn="endDate">Fecha Fin <p-sortIcon field="endDate"></p-sortIcon>
+                <th pSortableColumn="studentId">Estudiante <p-sortIcon field="studentId"></p-sortIcon>
                 </th>
-                <th>Cantantes </th>
-                <!--  <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
-                <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
-                <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th> -->
+
+
                 <th></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-campaign>
+        <ng-template pTemplate="body" let-nota>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="campaign"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="nota"></p-tableCheckbox>
                 </td>
-                <td>{{campaign.name}}</td>
+                <td>{{nota.Id}}</td>
                 <!--   <td>{{campaign.startDate}}</td> -->
-                <td>
+              <!--   <td>
                     <p-toggleButton (onChange)="handleChange($event, campaign)" onLabel="ACTIVADA"
                         offLabel="DESACTIVADA" [(ngModel)]="campaign.status"></p-toggleButton>
-                </td>
-                <td>{{campaign.endDate }}</td>
+                </td> -->
+                <td>{{nota.Value }}</td>
                 <td>
-                    <ng-template ngFor let-cantante [ngForOf]="campaign.singers">
-                        <div>{{cantante.name}}</div>
+                    <ng-template ngFor let-student [ngForOf]="students">
+                        <div>{{student.name}}</div>
                     </ng-template>
                 </td>
                 <!-- <td>{{singer.category}}</td>
@@ -71,15 +69,15 @@
                 <td>
                     <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCampaign(campaign)"></button> -->
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                        (click)="deleteCampaign(campaign)"></button>
+                        (click)="deleteScore(nota)"></button>
                     <button pButton pRipple icon="pi pi-chart-bar" class="p-button-rounded p-button-warning"
-                        label="Estadisticas" (click)="openStats(campaign.id)" ></button>
+                        label="Estadisticas" (click)="openStats(nota.id)" ></button>
                 </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
             <div class="flex align-items-center justify-content-between">
-                En total hay {{campaigns ? campaigns.length : 0 }} campañas.
+                En total hay {{scores ? scores.length : 0 }} notas.
             </div>
         </ng-template>
     </p-table>
@@ -89,28 +87,33 @@
     [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="field mt-2">
-            <label for="endDate">Fecha de fin de campaña</label>
+            <label for="Value">Nota</label>
 
-            <p-calendar [(ngModel)]="campaign.endDate" [showTime]="true" [showSeconds]="true" [inline]="true"
-                dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+
+              <div class="p-inputgroup">
+
+                  <input type="number" pInputText placeholder="Nota">
+
+
+          </div>
 
         </div>
         <div class="field mt-3">
-            <label for="singers">Cantantes</label>
-            <p-multiSelect [options]="singers" [(ngModel)]="campaign.singers" optionLabel="name" [virtualScroll]="true" [virtualScrollItemSize]="30"
+            <label for="studentId">Estudiante</label>
+            <p-multiSelect [options]="students" [(ngModel)]="score.studentId" optionLabel="name" [virtualScroll]="true" [virtualScrollItemSize]="30"
                 required="true"></p-multiSelect>
         </div>
-        <div class="field mt-2">
+     <!--    <div class="field mt-2">
             <label for="name">Nombre de campaña</label>
             <input type="text" pInputText id="name" [(ngModel)]="campaign.name" required autofocus />
             <small class="p-error" *ngIf="submitted && !campaign.name">Nombre es requerido.</small>
-        </div>
+        </div> -->
 
-        <div class="field" style="display: none;">
+      <!--   <div class="field" style="display: none;">
 
-            <p-toggleButton (onChange)="handleChange($event, campaign)" onLabel="ACTIVADA" offLabel="DESACTIVADA"
+            <p-toggleButton (onChange)="handleChange($event, score)" onLabel="ACTIVADA" offLabel="DESACTIVADA"
                 [(ngModel)]="campaign.status"></p-toggleButton>
-        </div>
+        </div> -->
 
         <!-- <div class="field">
             <label for="singers">Cantantes</label>
