@@ -1,7 +1,7 @@
 export interface Student {
-  id?: number;
-  name?: String;
-  lastname?: String;
-  age?: number;
-  email?: String;
+  Id?: number;
+  Name?: String;
+  Lastname?: String;
+  Age?: number;
+  Email?: String;
 }

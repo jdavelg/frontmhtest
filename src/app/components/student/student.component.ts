@@ -102,7 +102,7 @@ export class StudentComponent {
 
         for (var i = 0; i < this.selectedStudents.length; i++) {
           let cantante = this.selectedStudents[i]
-          this._studentService.deleteStudent(cantante.id).subscribe(
+          this._studentService.deleteStudent(this.student.Id).subscribe(
             resp => {
               this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'borrado ' + i + ' de ' + this.selectedStudents.length + ' seleccionados', life: 1000 });
             },
@@ -168,7 +168,7 @@ export class StudentComponent {
     /*   console.log('campania', this.student); */
     console.log(this.student);
 
-    if (this.student.id !== undefined && this.student.id != null) {
+    if (this.student.Id !== undefined && this.student.Id != null) {
 
       this._studentService.updateStudent(this.student).subscribe(
         resp => {
@@ -216,7 +216,7 @@ export class StudentComponent {
   findIndexById(id: any): number {
     let index = -1;
     for (let i = 0; i < this.students.length; i++) {
-      if ( this.students[i].id === id) {
+      if ( this.students[i].Id === id) {
         index = i;
         break;
       }
