@@ -1,28 +1,19 @@
-<p>home works!</p>
+
 <p-tabView styleClass="tabview-custom">
     <p-tabPanel [cache]="false">
         <ng-template pTemplate="header">
             <i class="pi pi-user"></i>
-            <span>Cantantes</span>
+            <span>Estudiantes</span>
         </ng-template>
         <ng-template pTemplate="content">
         <app-student></app-student>
     </ng-template>
     </p-tabPanel>
-    <p-tabPanel header="Header II" [cache]="false">
-        <ng-template pTemplate="header">
-            <i class="pi pi-calendar-plus"></i>
-            <span>Campañas de votación</span>
-        </ng-template>
 
-        <ng-template pTemplate="content">
-        <app-student></app-student>
-    </ng-template>
-    </p-tabPanel>
-      <p-tabPanel header="Header III" [cache]="false">
+      <p-tabPanel header="Header II" [cache]="false">
         <ng-template pTemplate = "header">
             <i class="pi pi-images"></i>
-       <span> Banners</span>
+       <span> Notas</span>
 
         </ng-template>
 

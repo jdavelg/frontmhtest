@@ -4,4 +4,5 @@ export interface Student {
   Lastname?: String;
   Age?: number;
   Email?: String;
+  scores?:any
 }

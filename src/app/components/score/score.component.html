@@ -1,142 +1,121 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-                (click)="openNew()"></button>
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-                (click)="deleteSelectedCampaigns()"
-                [disabled]="!selectedCampaigns || !selectedCampaigns.length"></button>
-        </ng-template>
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+      <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedScores()"
+        [disabled]="!selectedCampaigns || !selectedCampaigns.length"></button>
+    </ng-template>
 
-        <ng-template pTemplate="right">
-            <!--     <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+    <ng-template pTemplate="right">
+      <!--     <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
             <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button> -->
-        </ng-template>
-    </p-toolbar>
+    </ng-template>
+  </p-toolbar>
 
-    <p-table #dt [value]="scores" [rows]="10" [paginator]="true" [globalFilterFields]="['value']"
-        responsiveLayout="scroll" [(selection)]="selectedScores" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Showing {last} to {first} of {totalRecords} entries" [showCurrentPageReport]="true">
-        <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Administrar Campañas</h5>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value , 'contains')"
-                        placeholder="Buscar..." />
-                </span>
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 3rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
-                <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon>
-                </th>
+  <p-table #dt [value]="scores" [rows]="10" [paginator]="true" [globalFilterFields]="['value']"
+    responsiveLayout="scroll" [(selection)]="selectedScores" [rowHover]="true" dataKey="id"
+    currentPageReportTemplate="Showing {last} to {first} of {totalRecords} entries" [showCurrentPageReport]="true">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h5 class="m-0">Administrar notas</h5>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt.filterGlobal($event.target.value , 'contains')"
+            placeholder="Buscar..." />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon>
+        </th>
 
-                <th pSortableColumn="value">Nota <p-sortIcon field="value"></p-sortIcon>
-                </th>
-                <th pSortableColumn="studentId">Estudiante <p-sortIcon field="studentId"></p-sortIcon>
-                </th>
+        <th pSortableColumn="value">Nota <p-sortIcon field="value"></p-sortIcon>
+        </th>
+        <th pSortableColumn="studentId">Estudiante <p-sortIcon field="studentId"></p-sortIcon>
+        </th>
 
 
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-nota>
-            <tr>
-                <td>
-                    <p-tableCheckbox [value]="nota"></p-tableCheckbox>
-                </td>
-                <td>{{nota.Id}}</td>
-                <!--   <td>{{campaign.startDate}}</td> -->
-              <!--   <td>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-nota>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="nota"></p-tableCheckbox>
+        </td>
+        <td>{{nota.id}}</td>
+        <!--   <td>{{campaign.startDate}}</td> -->
+        <!--   <td>
                     <p-toggleButton (onChange)="handleChange($event, campaign)" onLabel="ACTIVADA"
                         offLabel="DESACTIVADA" [(ngModel)]="campaign.status"></p-toggleButton>
                 </td> -->
-                <td>{{nota.Value }}</td>
-                <td>
-                    <ng-template ngFor let-student [ngForOf]="students">
-                        <div>{{student.name}}</div>
-                    </ng-template>
-                </td>
-                <!-- <td>{{singer.category}}</td>
-                <td><p-rating [ngModel]="singer.rating" readonly="true" cancel="false"></p-rating></td>
-                <td><span [class]="'singer-badge status-' + (singer.inventoryStatus ? singer.inventoryStatus.toLowerCase() : '')">{{singer.inventoryStatus}}</span></td> -->
-                <td>
-                    <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCampaign(campaign)"></button> -->
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                        (click)="deleteScore(nota)"></button>
-                    <button pButton pRipple icon="pi pi-chart-bar" class="p-button-rounded p-button-warning"
-                        label="Estadisticas" (click)="openStats(nota.id)" ></button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                En total hay {{scores ? scores.length : 0 }} notas.
-            </div>
-        </ng-template>
-    </p-table>
+        <td>{{nota.value }}</td>
+        <td>
+          <ng-template ngFor let-student [ngForOf]="students">
+            <div *ngIf="student.id==nota.studentId">{{student.name}}</div>
+          </ng-template>
+        </td>
+
+        <td>
+
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+            (click)="deleteScore(nota)"></button>
+          <button pButton pRipple class="p-button-rounded p-button-warning" label="Actualizar"
+            (click)="openNew(nota)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        En total hay {{scores ? scores.length : 0 }} notas.
+      </div>
+    </ng-template>
+  </p-table>
 </div>
 
-<p-dialog [(visible)]="scoreDialog" [style]="{width: '470px', minHeight:'95%'}" header="Campaña Detalles"
-    [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="field mt-2">
-            <label for="Value">Nota</label>
+<p-dialog [(visible)]="scoreDialog" [style]="{width: '470px', minHeight:'95%'}" header="Campaña Detalles" [modal]="true"
+  styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field mt-2">
+      <label for="Value">Nota</label>
 
 
-              <div class="p-inputgroup">
+      <div class="p-inputgroup">
 
-                  <input type="number" pInputText placeholder="Nota">
+        <input type="number" pInputText placeholder="Escribe Nota" [(ngModel)]="score.value">
 
 
+      </div>
+
+    </div>
+    <div class="field mt-3">
+      <label for="studentId">Estudiante</label>
+      <p-dropdown [options]="students" [(ngModel)]="score.studentId" optionLabel="name" [virtualScroll]="true"
+        [virtualScrollItemSize]="30" required="true" optionValue="id">
+        <ng-template let-student pTemplate="selectedItem">
+          <div *ngIf="score.studentId" class="country-item country-item-value">
+            <div *ngIf="student.id== score.studentId">{{student.name}}</div>
           </div>
+        </ng-template>
+        <ng-template let-student pTemplate="item">
+          <div class="country-item">{{student.name}}</div>
+        </ng-template>
+      </p-dropdown>
+    </div>
 
-        </div>
-        <div class="field mt-3">
-            <label for="studentId">Estudiante</label>
-            <p-multiSelect [options]="students" [(ngModel)]="score.studentId" optionLabel="name" [virtualScroll]="true" [virtualScrollItemSize]="30"
-                required="true"></p-multiSelect>
-        </div>
-     <!--    <div class="field mt-2">
-            <label for="name">Nombre de campaña</label>
-            <input type="text" pInputText id="name" [(ngModel)]="campaign.name" required autofocus />
-            <small class="p-error" *ngIf="submitted && !campaign.name">Nombre es requerido.</small>
-        </div> -->
+  </ng-template>
 
-      <!--   <div class="field" style="display: none;">
-
-            <p-toggleButton (onChange)="handleChange($event, score)" onLabel="ACTIVADA" offLabel="DESACTIVADA"
-                [(ngModel)]="campaign.status"></p-toggleButton>
-        </div> -->
-
-        <!-- <div class="field">
-            <label for="singers">Cantantes</label>
-            <p-multiSelect [options]="singers" [(ngModel)]="campaign.singers" display="chip"></p-multiSelect>
-        </div> -->
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" [disabled]="campaign.name==undefined ||campaign.endDate==undefined ? true : false " class="p-button-text" (click)="saveCampaign()"></button>
-    </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveScore()"></button>
+  </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="statsDialog" [style]="{width: '80%', minHeight:'95%'}" header="Detalle de campaña" [modal]="true"
-    styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <app-stats [campaignId]="campaignId"></app-stats>
-    </ng-template>
 
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cerrar" icon="pi pi-times" class="p-button-rounded p-button-danger"
-            (click)="hideStatsDialog()"></button>
-        <!-- <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCampaign()"></button> -->
-    </ng-template>
-</p-dialog>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

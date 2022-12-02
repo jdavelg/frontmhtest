@@ -1,139 +1,167 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
-                (click)="openNew()"></button>
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
-                (click)="deleteSelectedCampaigns()"
-                [disabled]="!selectedCampaigns || !selectedCampaigns.length"></button>
-        </ng-template>
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+      <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+        (click)="deleteSelectedCampaigns()" [disabled]="!selectedCampaigns || !selectedCampaigns.length"></button>
+    </ng-template>
 
-        <ng-template pTemplate="right">
-            <!--     <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button> -->
-        </ng-template>
-    </p-toolbar>
+    <ng-template pTemplate="right">
 
-    <p-table #dt [value]="students" [rows]="10" [paginator]="true" [globalFilterFields]="['name']"
-        responsiveLayout="scroll" [(selection)]="selectedStudents" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Showing {last} to {first} of {totalRecords} entries" [showCurrentPageReport]="true">
-        <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Administrar Campañas</h5>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value , 'contains')"
-                        placeholder="Buscar..." />
-                </span>
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 3rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
-                <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon>
-                </th>
-                <!--  <th pSortableColumn="startDate">Fecha Inicio <p-sortIcon field="startDate"></p-sortIcon></th> -->
-                <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon>
-                </th>
-                <th pSortableColumn="endDate">Fecha Fin <p-sortIcon field="endDate"></p-sortIcon>
-                </th>
-                <th>Cantantes </th>
-                <!--  <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
-                <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
-                <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th> -->
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-campaign>
-            <tr>
-                <td>
-                    <p-tableCheckbox [value]="campaign"></p-tableCheckbox>
-                </td>
-                <td>{{campaign.name}}</td>
-                <!--   <td>{{campaign.startDate}}</td> -->
-                <td>
-                    <p-toggleButton (onChange)="handleChange($event, campaign)" onLabel="ACTIVADA"
-                        offLabel="DESACTIVADA" [(ngModel)]="campaign.status"></p-toggleButton>
-                </td>
-                <td>{{campaign.endDate }}</td>
-                <td>
-                    <ng-template ngFor let-cantante [ngForOf]="campaign.singers">
-                        <div>{{cantante.name}}</div>
-                    </ng-template>
-                </td>
-                <!-- <td>{{singer.category}}</td>
-                <td><p-rating [ngModel]="singer.rating" readonly="true" cancel="false"></p-rating></td>
-                <td><span [class]="'singer-badge status-' + (singer.inventoryStatus ? singer.inventoryStatus.toLowerCase() : '')">{{singer.inventoryStatus}}</span></td> -->
-                <td>
-                    <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCampaign(campaign)"></button> -->
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                        (click)="deleteCampaign(campaign)"></button>
-                    <button pButton pRipple icon="pi pi-chart-bar" class="p-button-rounded p-button-warning"
-                        label="Estadisticas" (click)="openStats(campaign.id)" ></button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                En total hay {{campaigns ? campaigns.length : 0 }} campañas.
-            </div>
-        </ng-template>
-    </p-table>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="students" [rows]="10" [paginator]="true" [globalFilterFields]="['name', 'lastname','email']"
+    responsiveLayout="scroll" [(selection)]="selectedStudents" [rowHover]="true" dataKey="id"
+    currentPageReportTemplate="Showing {last} to {first} of {totalRecords} entries" [showCurrentPageReport]="true">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h5 class="m-0">Administrar Estudiantes</h5>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt.filterGlobal($event.target.value , 'contains')"
+            placeholder="Buscar..." />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="Name">Nombre <p-sortIcon field="Name"></p-sortIcon>
+        </th>
+
+        <th pSortableColumn="Lastname">Apellido <p-sortIcon field="Lastname"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Email">Email <p-sortIcon field="Email"></p-sortIcon>
+        </th>
+        <th>Edad </th>
+
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-student>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="student"></p-tableCheckbox>
+        </td>
+        <td>{{student.name}}</td>
+
+        <td>{{student.lastname }}</td>
+        <td>
+
+          <div>{{student.email}}</div>
+
+        </td>
+        <td>{{student.age}}</td>
+
+        <td>
+          <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCampaign(student)"></button> -->
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+            (click)="deleteStudent(student)"></button>
+          <button pButton pRipple icon="pi pi-chart-bar" class="p-button-rounded p-button-warning" label="Actualizar"
+            (click)="editStudent(student)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        En total hay {{students ? students.length : 0 }} estudiantes.
+      </div>
+    </ng-template>
+  </p-table>
 </div>
 
-<p-dialog [(visible)]="studentDialog" [style]="{width: '470px', minHeight:'95%'}" header="Campaña Detalles"
-    [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="field mt-2">
-            <label for="endDate">Fecha de fin de campaña</label>
+<p-dialog [(visible)]="studentuDialog" [style]="{width: '470px', minHeight:'95%'}" header="Estudiante"
+  [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field mt-2">
+      <label for="Name">Nombre de estudiante</label>
 
-            <p-calendar [(ngModel)]="campaign.endDate" [showTime]="true" [showSeconds]="true" [inline]="true"
-                dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+      <input type="text" pInputText id="Name" [(ngModel)]="student.name" required autofocus />
 
-        </div>
-        <div class="field mt-3">
+    </div>
+    <div class="field mt-3">
+      <label for="Lastname">Apellido de estudiante</label>
+      <input type="text" pInputText id="Lastname" [(ngModel)]="student.lastname" required autofocus />
+    </div>
+    <div class="field mt-2">
+      <label for="Age">Edad de estudiante</label>
+      <input type="number" pInputText id="Age" [(ngModel)]="student.age" required autofocus />
+      <small class="p-error" *ngIf="submitted && !student.age">Nombre es requerido.</small>
+    </div>
+
+    <div class="field mt-2">
+      <label for="Email">Email</label>
+      <input type="email" pInputText id="Email" [(ngModel)]="student.email" required autofocus />
+      <small class="p-error" *ngIf="submitted && !student.email">Email es requerido.</small>
+    </div>
+
+    <!-- <div class="field">
             <label for="singers">Cantantes</label>
-            <p-multiSelect [options]="singers" [(ngModel)]="campaign.singers" optionLabel="name" [virtualScroll]="true" [virtualScrollItemSize]="30"
-                required="true"></p-multiSelect>
-        </div>
-        <div class="field mt-2">
-            <label for="name">Nombre de campaña</label>
-            <input type="text" pInputText id="name" [(ngModel)]="campaign.name" required autofocus />
-            <small class="p-error" *ngIf="submitted && !campaign.name">Nombre es requerido.</small>
-        </div>
-
-        <div class="field" style="display: none;">
-
-            <p-toggleButton (onChange)="handleChange($event, campaign)" onLabel="ACTIVADA" offLabel="DESACTIVADA"
-                [(ngModel)]="campaign.status"></p-toggleButton>
-        </div>
-
-        <!-- <div class="field">
-            <label for="singers">Cantantes</label>
-            <p-multiSelect [options]="singers" [(ngModel)]="campaign.singers" display="chip"></p-multiSelect>
+            <p-multiSelect [options]="singers" [(ngModel)]="student.singers" display="chip"></p-multiSelect>
         </div> -->
-    </ng-template>
+  </ng-template>
 
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" [disabled]="campaign.name==undefined ||campaign.endDate==undefined ? true : false " class="p-button-text" (click)="saveCampaign()"></button>
-    </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Guardar" icon="pi pi-check"
+       class="p-button-text"
+      (click)="saveStudent()"></button>
+  </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="statsDialog" [style]="{width: '80%', minHeight:'95%'}" header="Detalle de campaña" [modal]="true"
-    styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <app-stats [campaignId]="campaignId"></app-stats>
-    </ng-template>
+<p-dialog [(visible)]="studentDialog" [style]="{width: '470px', minHeight:'95%'}" header="Estudiante"
+  [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field mt-2">
+      <label for="Name">Nombre de estudiante</label>
 
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cerrar" icon="pi pi-times" class="p-button-rounded p-button-danger"
-            (click)="hideStatsDialog()"></button>
-        <!-- <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCampaign()"></button> -->
-    </ng-template>
+      <input type="text" pInputText id="Name" [(ngModel)]="student.Name" required autofocus />
+
+    </div>
+    <div class="field mt-3">
+      <label for="Lastname">Apellido de estudiante</label>
+      <input type="text" pInputText id="Lastname" [(ngModel)]="student.Lastname" required autofocus />
+    </div>
+    <div class="field mt-2">
+      <label for="Age">Edad de estudiante</label>
+      <input type="number" pInputText id="Age" [(ngModel)]="student.Age" required autofocus />
+      <small class="p-error" *ngIf="submitted && !student.Age">Nombre es requerido.</small>
+    </div>
+
+    <div class="field mt-2">
+      <label for="Email">Email</label>
+      <input type="email" pInputText id="Email" [(ngModel)]="student.Email" required autofocus />
+      <small class="p-error" *ngIf="submitted && !student.Email">Email es requerido.</small>
+    </div>
+
+    <!-- <div class="field">
+            <label for="singers">Cantantes</label>
+            <p-multiSelect [options]="singers" [(ngModel)]="student.singers" display="chip"></p-multiSelect>
+        </div> -->
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Guardar" icon="pi pi-check"
+       class="p-button-text"
+      (click)="saveStudent()"></button>
+  </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="statsDialog" [style]="{width: '80%', minHeight:'95%'}" header="Detalle de estudiante"
+  [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <app-stats [studentId]="studentId"></app-stats>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveStudent()"></button>
+    <!-- <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCampaign()"></button> -->
+  </ng-template>
 </p-dialog>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

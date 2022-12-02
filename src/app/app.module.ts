@@ -16,25 +16,31 @@ import { ToastModule } from 'primeng/toast';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputTextModule } from 'primeng/inputtext';
 import { ChipsModule } from 'primeng/chips';
 import { CardModule } from 'primeng/card';
 import { SkeletonModule } from 'primeng/skeleton';
-import { ChartModule } from 'primeng/chart';
+/* import { ChartModule } from 'primeng/chart'; */
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { HttpClientModule } from '@angular/common/http';
 import { TabViewModule } from 'primeng/tabview';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { FormsModule } from '@angular/forms';
+import {DropdownModule} from 'primeng/dropdown';
 @NgModule({
   declarations: [AppComponent, HomeComponent, StudentComponent, ScoreComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
     TableModule,
     ConfirmDialogModule,
     FileUploadModule,
+    DropdownModule,
     ToolbarModule,
     DialogModule,
     ToastModule,
@@ -45,7 +51,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
     ChipsModule,
     CardModule,
     SkeletonModule,
-    ChartModule,
+
     ProgressBarModule,
     TabViewModule,
     ToggleButtonModule,

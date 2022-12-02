@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Score } from 'src/app/interfaces/score';
 import { SharedService } from 'src/app/services/shared.service';
@@ -7,88 +7,100 @@ import { SharedService } from 'src/app/services/shared.service';
   selector: 'app-score',
   templateUrl: './score.component.html',
   styleUrls: ['./score.component.css'],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService, ConfirmationService],
 })
-export class ScoreComponent {
+export class ScoreComponent implements OnInit {
   checked: boolean | undefined;
   scores: Score[] = [];
-
-  score: Score ={}
-  isAuthenticated = false
- /*  private userSub: Subscription */
-  public nominateds: any
-  public userEmail: any
-  public connectedToB: boolean = true
-  clonedScores: { [s: string]: Score; } = {};
+  students: [] = [];
+  score: Score = {};
+  isAuthenticated = false;
+  /*  private userSub: Subscription */
+  public nominateds: any;
+  public userEmail: any;
+  public connectedToB: boolean = true;
+  clonedScores: { [s: string]: Score } = {};
 
   scoreDialog: boolean | undefined;
-  statsDialog: boolean = false
-  scoreId: any
+  statsDialog: boolean = false;
+  scoreId: any;
 
-  selectedScores: Score[] =[];
+  selectedScores: Score[] = [];
 
   submitted: boolean | undefined;
 
   statuses: any[] | undefined;
   constructor(
-
-
-    private _scoreService:SharedService,
-    private messageService: MessageService, private confirmationService: ConfirmationService
+    private _scoreService: SharedService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
-
-
-
-
+    this.getStudents();
   }
 
+  ngOnInit(): void {
+    this.getScores();
+  }
   handleChange(e: any, score: any) {
     var isChecked = e.checked;
-    score.status = e.checked
+    score.status = e.checked;
     this._scoreService.updateScore(score).subscribe(
-      res => {
-        this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Registro actualizado satisfactoriamenete', life: 3000 });
-        this.getScores()
+      (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Exito',
+          detail: 'Registro actualizado satisfactoriamenete',
+          life: 3000,
+        });
+        this.getScores();
       },
-      error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrio un error en la peticion' });
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Ocurrio un error en la peticion',
+        });
       }
-    )
-
-
+    );
   }
+
+  getStudents() {
+    this._scoreService.getStudents().subscribe(
+      (resp) => {
+        this.students = resp;
+      },
+      (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Ocurrio un error al conectarse al servidor',
+        });
+      }
+    );
+  }
+
   getScores() {
     this._scoreService.getScores().subscribe(
-      resp => {
-        this.scores = resp
-
+      (resp) => {
+        this.scores = resp;
       },
-      err => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrio un error al conectarse al servidor' });
+      (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Ocurrio un error al conectarse al servidor',
+        });
       }
-    )
+    );
   }
 
-  /* getScores() {
-    this._scoreService.getCampaings().subscribe(
-      resp => {
+  openNew(score?: any) {
+    if (score) {
+      this.score = score;
+    } else {
+      this.score = {};
+    }
 
-
-        this.scores = resp
-        this.scores.map(campana => {
-
-          campana.endDate = new Date(campana.endDate)
-        })
-      },
-      err => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrio un error al conectarse al servidor' });
-      }
-    )
-  } */
-
-  /* new code  */
-  openNew() {
-    this.score = {}
     this.submitted = false;
     this.scoreDialog = true;
   }
@@ -99,23 +111,41 @@ export class ScoreComponent {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-
         for (var i = 0; i < this.selectedScores.length; i++) {
-          let score = this.selectedScores[i]
-          this._scoreService.deleteScore(score.Id).subscribe(
-            resp => {
-              this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'borrado ' + i + ' de ' + this.selectedScores.length + ' seleccionados', life: 1000 });
+          let score = this.selectedScores[i];
+          this._scoreService.deleteScore(score.id).subscribe(
+            (resp) => {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Exito',
+                detail:
+                  'borrado ' +
+                  i +
+                  ' de ' +
+                  this.selectedScores.length +
+                  ' seleccionados',
+                life: 1000,
+              });
             },
-            err => {
-              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar registro ' + i + ' de ' + this.selectedScores.length + ' seleccionados', life: 1000 });
+            (err) => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail:
+                  'Error al borrar registro ' +
+                  i +
+                  ' de ' +
+                  this.selectedScores.length +
+                  ' seleccionados',
+                life: 1000,
+              });
             }
-          )
+          );
         }
 
-
         this.selectedScores = [];
-        this.getScores()
-      }
+        this.getScores();
+      },
     });
   }
 
@@ -126,71 +156,108 @@ export class ScoreComponent {
 
   deleteScore(score: any) {
     this.confirmationService.confirm({
-      message: 'Estas seguro sobre eliminar ' + score.name + '?',
+      message: 'Estas seguro sobre eliminar esta nota?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         /*       this.types = this.types.filter(val => val.id !== type.id); */
         this._scoreService.deleteScore(score.id).subscribe(
-          resp => {
-            this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Registro borrado satisfactoriamenete', life: 3000 });
-            this.getScores()
+          (resp) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Exito',
+              detail: 'Registro borrado satisfactoriamenete',
+              life: 3000,
+            });
+            this.getScores();
           },
-          err => {
+          (err) => {
             console.log(err);
 
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar registro ', life: 3000 });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error al borrar registro ',
+              life: 3000,
+            });
           }
-        )
+        );
         this.score = {};
-
-      }
+      },
     });
   }
 
   openStats(id: any) {
-    this.scoreId = id
-    this.statsDialog = true
+    this.scoreId = id;
+    this.statsDialog = true;
   }
 
   hideStatsDialog() {
-    this.scoreId = null
-    this.statsDialog = false
+    this.scoreId = null;
+    this.statsDialog = false;
   }
   hideDialog() {
-    this.score = {}
+    this.score = {};
     this.scoreDialog = false;
     this.submitted = false;
   }
 
   saveScore() {
+    console.log(this.score);
+
+    if (this.score.value) {
+      this.score.value = +this.score.value;
+    }
+    if (this.score.studentId[0]) {
+      this.score.studentId = this.score.studentId[0];
+    }
+
     this.submitted = true;
     /*   console.log('campania', this.score); */
     console.log(this.score);
 
-    if (this.score.Id !== undefined && this.score.Id != null) {
-
+    if (this.score.id !== undefined && this.score.id != null) {
       this._scoreService.updateScore(this.score).subscribe(
-        resp => {
-          this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Registro actualizado', life: 3000 });
-          this.hideDialog()
-          this.getScores()
+        (resp) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Exito',
+            detail: 'Registro actualizado',
+            life: 3000,
+          });
+          this.hideDialog();
+          this.getScores();
         },
-        err => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error en el servidor al guardar el registro', life: 3000 });
+        (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error en el servidor al guardar el registro',
+            life: 3000,
+          });
         }
-      )
+      );
     } else {
       this._scoreService.saveScore(this.score).subscribe(
-        resp => {
-          this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Registro guardado', life: 3000 });
-          this.hideDialog()
-          this.getScores()
+        (resp) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Exito',
+            detail: 'Registro guardado',
+            life: 3000,
+          });
+          this.hideDialog();
+          this.getScores();
         },
-        err => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error en el servidor al guardar el registro', life: 3000 });
+        (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error en el servidor al guardar el registro',
+            life: 3000,
+          });
         }
-      )
+      );
     }
 
     /*    if (this.type.name) {
@@ -209,14 +276,12 @@ export class ScoreComponent {
            this.categoryDialog = false;
            this.type = undefined;
        } */
-
-
   }
 
   findIndexById(id: any): number {
     let index = -1;
     for (let i = 0; i < this.scores.length; i++) {
-      if ( this.scores[i].Id === id) {
+      if (this.scores[i].id === id) {
         index = i;
         break;
       }
@@ -227,7 +292,8 @@ export class ScoreComponent {
 
   createId(): string {
     let id = '';
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < 5; i++) {
       id += chars.charAt(Math.floor(Math.random() * chars.length));
     }

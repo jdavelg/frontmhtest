@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Student } from 'src/app/interfaces/student';
 import { SharedService } from 'src/app/services/shared.service';
@@ -9,11 +9,11 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./student.component.css'],
   providers: [MessageService, ConfirmationService]
 })
-export class StudentComponent {
+export class StudentComponent implements OnInit{
   checked: boolean | undefined;
-  students: Student[] = [];
-
-  student: Student ={}
+  students: any[] = [];
+  studentuDialog:boolean=false
+  student: any ={}
   isAuthenticated = false
  /*  private userSub: Subscription */
   public nominateds: any
@@ -42,6 +42,10 @@ export class StudentComponent {
 
   }
 
+  ngOnInit(): void {
+
+    this.getStudents()
+  }
   handleChange(e: any, student: any) {
     var isChecked = e.checked;
     student.status = e.checked
@@ -69,22 +73,6 @@ export class StudentComponent {
     )
   }
 
-  /* getStudents() {
-    this._studentService.getCampaings().subscribe(
-      resp => {
-
-
-        this.students = resp
-        this.students.map(campana => {
-
-          campana.endDate = new Date(campana.endDate)
-        })
-      },
-      err => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrio un error al conectarse al servidor' });
-      }
-    )
-  } */
 
   /* new code  */
   openNew() {
@@ -119,9 +107,12 @@ export class StudentComponent {
     });
   }
 
-  editStudent(student: Student) {
-    this.student = { ...student };
-    this.studentDialog = true;
+  editStudent(student: any) {
+    /* this.student = { ...student }; */
+    console.log(student);
+
+    this.student=student
+    this.studentuDialog = true;
   }
 
   deleteStudent(student: any) {
@@ -160,15 +151,16 @@ export class StudentComponent {
   hideDialog() {
     this.student = {}
     this.studentDialog = false;
+    this.studentuDialog=false
     this.submitted = false;
   }
 
   saveStudent() {
     this.submitted = true;
-    /*   console.log('campania', this.student); */
+
     console.log(this.student);
 
-    if (this.student.Id !== undefined && this.student.Id != null) {
+    if (this.student.Id !== undefined && this.student.Id != null ||this.student.id !== undefined && this.student.id != null ) {
 
       this._studentService.updateStudent(this.student).subscribe(
         resp => {
@@ -181,6 +173,9 @@ export class StudentComponent {
         }
       )
     } else {
+
+      console.log(this.student);
+
       this._studentService.saveStudent(this.student).subscribe(
         resp => {
           this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Registro guardado', life: 3000 });
@@ -189,6 +184,7 @@ export class StudentComponent {
         },
         err => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error en el servidor al guardar el registro', life: 3000 });
+          this.hideDialog()
         }
       )
     }
