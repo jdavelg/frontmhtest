@@ -16,7 +16,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="scores" [rows]="10" [paginator]="true" [globalFilterFields]="['name']"
+    <p-table #dt [value]="scores" [rows]="10" [paginator]="true" [globalFilterFields]="['value']"
         responsiveLayout="scroll" [(selection)]="selectedScores" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Showing {last} to {first} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
